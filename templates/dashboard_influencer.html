@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Dashboard - CollabZone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Modal styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fff; /* White background for the modal content */
+            margin: 10% auto; /* Center the modal */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 800px; /* Limit maximum width */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 8px; /* Rounded corners */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px; /* Add gap between left and right sections */
+        }
+
+        .form-left,
+        .form-right {
+            width: 50%;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333; /* Darker text for better readability */
+        }
+
+        .form-group p {
+            background-color: #f9f9f9; /* Light grey background for text */
+            padding: 8px;
+            border-radius: 4px; /* Rounded corners for text background */
+            color: #333; /* Darker text color */
+            margin: 0; /* Remove default margins */
+        }
+
+        .btn {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        #socialHandlesTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #socialHandlesTable th,
+        #socialHandlesTable td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left; /* Center text in the cells */
+        }
+
+        #socialHandlesTable th {
+            background-color: #f4f4f4;
+            color: #333; /* Ensure headings are visible */
+            font-weight: bold;
+        }
+
+        .remove-row {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .remove-row:hover {
+            background-color: #d32f2f;
+        }
+
+        #pieChartModal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .pie-chart-content {
+            background-color: #fff; /* White background for the modal content */
+            margin: 10% auto; /* Center the modal */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 800px; /* Limit maximum width */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 8px; /* Rounded corners */
+        }
+
+        .pie-chart-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .pie-chart-close:hover,
+        .pie-chart-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .profile-photo-box {
+            border: 2px solid #ddd;
+            border-radius: 8px; /* Rounded corners */
+            padding: 10px;
+            width: 100%;
+            max-width: 300px; /* Limit width */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        .profile-photo-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px; /* Slightly rounded corners for the image */
+        }
+
+        /* Stats Section Styling */
+        .section stats-section {
+            color: #333;
+        }
+        .stats-section {
+            padding: 20px;
+            background-color: #f4f4f4; /* Light grey background for the section */
+            border-radius: 8px; /* Rounded corners for the section */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow for better separation */
+            margin-bottom: 20px; /* Space below the stats section */
+            color: #333; /* Darker text color */
+        }
+        .section ad-request-management h2{
+            color: #333;
+        }
+        .stats-section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .stats-section .btn {
+            margin-top: 10px;
+        }
+
+        /* Ad Requests Section Styling */
+        .ad-request-management {
+            padding: 20px;
+            background-color: #f4f4f4; /* Light grey background for the section */
+            border-radius: 8px; /* Rounded corners for the section */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow for better separation */
+        }
+
+        .ad-request-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ad-request-table th,
+        .ad-request-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .ad-request-table th {
+            background-color: #f4f4f4;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .ad-request-table td form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CollabZone - Influencer Dashboard</h1>
+        <nav>
+            <a href="{{ url_for('influencer_dashboard') }}">Home</a>
+            <a href="#" id="profileLink">Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+    <main class="main-content">
+        <!-- Stats Section -->
+        <section class="section stats-section">
+            <h2>Stats</h2>
+            <p>Total Earnings: ${{ total_earnings }}</p>
+            <p>Current Month Earnings: ${{ current_month_earnings }}</p>
+            <button class="btn btn-primary" id="viewEarningsBtn">View Earnings</button>
+        </section>
+
+        <!-- Ad Requests Section -->
+        <section class="section ad-request-management">
+            <h2>Ad Requests</h2>
+            <!-- List of ad requests -->
+            <table class="ad-request-table">
+                <thead>
+                    <tr>
+                        <th>Campaign Name</th>
+                        <th>Details</th>
+                        <th>Status</th>
+                        <th>Payment Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ad_request in ad_requests %}
+                        <tr>
+                            <td>{{ ad_request.campaign.name }}</td>
+                            <td>{{ ad_request.details }}</td>
+                            <td>{{ ad_request.status }}</td>
+                            <td>${{ ad_request.payment_amount }}</td>
+                            <td>
+                                <form action="{{ url_for('accept_ad_request', ad_request_id=ad_request.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-success">Accept</button>
+                                </form>
+                                <form action="{{ url_for('reject_ad_request', ad_request_id=ad_request.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger">Reject</button>
+                                </form>
+                                <a href="{{ url_for('negotiate_ad_request', ad_request_id=ad_request.id) }}" class="btn btn-warning">Negotiate</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Profile</h2>
+            {% if selected_sponsor %}
+                <div class="form-container">
+                    <div class="form-left">
+                        <div class="form-group">
+                            <label for="brandName">Brand Name:</label>
+                            <p id="brandName">{{ selected_sponsor.brand_name }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="brandNiche">Brand Niche:</label>
+                            <p id="brandNiche">{{ selected_sponsor.brand_niche }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <p id="email">{{ selected_sponsor.email }}</p>
+                        </div>
+                    </div>
+                    <div class="form-right">
+                        <div class="form-group profile-photo-box">
+                            <img src="{{ url_for('static', filename='uploads/' + selected_sponsor.profile_photo) }}" alt="Profile Photo">
+                        </div>
+                        <button class="btn btn-primary" id="updateProfileBtn">Update Profile</button>
+                    </div>
+                </div>
+                <h3>Social Media Handles</h3>
+                <table id="socialHandlesTable">
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for handle in selected_sponsor.social_handles %}
+                            <tr>
+                                <td>{{ handle.platform }}</td>
+                                <td><a href="{{ handle.link }}" target="_blank">{{ handle.link }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No sponsor selected or available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Pie Chart Modal -->
+    <div id="pieChartModal" class="modal">
+        <div class="pie-chart-content">
+            <span class="pie-chart-close">&times;</span>
+            <h2>Earnings Overview</h2>
+            <canvas id="pieChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Get the modals
+    var profileModal = document.getElementById("profileModal");
+    var pieChartModal = document.getElementById("pieChartModal");
+
+    // Get the buttons that open the modals
+    var profileLink = document.getElementById("profileLink");
+    var viewEarningsBtn = document.getElementById("viewEarningsBtn");
+
+    // Get the <span> elements that close the modals
+    var profileClose = document.querySelector("#profileModal .close");
+    var pieChartClose = document.querySelector("#pieChartModal .pie-chart-close");
+
+    // When the user clicks on the button, open the modal
+    profileLink.onclick = function() {
+        profileModal.style.display = "block";
+    }
+
+    viewEarningsBtn.onclick = function() {
+        pieChartModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    profileClose.onclick = function() {
+        profileModal.style.display = "none";
+    }
+
+    pieChartClose.onclick = function() {
+        pieChartModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == profileModal) {
+            profileModal.style.display = "none";
+        }
+        if (event.target == pieChartModal) {
+            pieChartModal.style.display = "none";
+        }
+    }
+
+    // Pie Chart data
+    var ctx = document.getElementById('pieChart').getContext('2d');
+    var pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: {{ sponsors_labels | tojson }},
+            datasets: [{
+                data: {{ sponsors_values | tojson }},
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#E7E9ED',
+                    '#4BC0C0'
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': $' + tooltipItem.raw;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+</script>
+</body>
+</html>

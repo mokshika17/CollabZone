@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Sponsor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylessponsor.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylesreg.css') }}">
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm-password").value;
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return false;
+            }
+            return true;
+        }
+        
+        function addSocialMediaField() {
+            var container = document.getElementById("social-media-container");
+            var div = document.createElement("div");
+            div.className = "form-group";
+    
+            var platform = document.createElement("select");
+            platform.name = "platform[]";
+            platform.innerHTML = `
+                <option value="">Select Platform</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="YouTube">YouTube</option>
+                <option value="Snapchat">Snapchat</option>
+                <option value="X">X</option>`;
+            
+            var link = document.createElement("input");
+            link.type = "url";
+            link.name = "social_link[]";
+            link.placeholder = "Social Media Link";
+            
+            div.appendChild(platform);
+            div.appendChild(link);
+            container.appendChild(div);
+        }
+
+        function previewProfilePhoto(event) {
+            var output = document.getElementById('profile-photo-preview');
+            var file = event.target.files[0];
+            if (file) {
+                output.src = URL.createObjectURL(file);
+                output.style.display = 'block';
+            } else {
+                output.style.display = 'none';
+            }
+        }
+    </script>
+    <style>
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-left, .form-right {
+            width: 48%;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        #profile-photo-box {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #profile-photo-preview {
+            display: none;
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a style="color:#f0a500" href="{{ url_for('index') }}" id="meaningful">CollabZone</a>
+        </div>
+        <div class="toptier">
+            <nav>
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register_sponsor') }}">Register as Sponsor</a>
+                <a href="{{ url_for('register_influencer') }}">Register as Influencer</a>
+            </nav>
+        </div>
+    </header>
+    <hr align="center" width="1230px" size="2" noshade="true">
+    <div class="container">
+        <h2>Register as Sponsor</h2>
+        <form action="{{ url_for('register_sponsor') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            {{ form.hidden_tag() }}
+            <div class="form-container">
+                <div class="form-left">
+                    <div class="form-group">
+                        <label for="brand_name">Brand Name:</label>
+                        {{ form.brand_name(size=32) }}
+                    </div>
+                    <div class="form-group">
+                        <label for="brand_niche">Niche of Brand:</label>
+                        {{ form.brand_niche(size=32) }}
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_no">Contact No:</label>
+                        {{ form.contact_no(size=32) }}
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        {{ form.password(size=32, id='password') }}
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password:</label>
+                        {{ form.confirm_password(size=32, id='confirm-password') }}
+                    </div>
+                </div>
+                <div class="form-right">
+                    <div class="form-group">
+                        <label for="email">Brand Email:</label>
+                        {{ form.email(size=32, id='email') }}
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_photo">Profile Photo:</label>
+                        {{ form.profile_photo(onchange="previewProfilePhoto(event)") }}
+                    </div>
+                    <div id="profile-photo-box">
+                        <img id="profile-photo-preview" alt="Profile Photo Preview">
+                        <p id="photo-instructions">Upload your profile photo</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-success btn-lg float-right" type="button" onclick="addSocialMediaField()" id="id9">Add Social Media Handle</button>
+                <h3>Social Media Handles</h3>    
+            </div>
+            <div id="social-media-container">
+                <div class="form-group">
+                    <select name="platform[]">
+                        <option value="">Select Platform</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="Snapchat">Snapchat</option>
+                        <option value="X">X</option>
+                    </select>
+                    <input type="url" name="social_link[]" placeholder="Social Media Link">
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+    </div>
+    <footer>
+        <div class="container2">
+            <p>Contact info: info@collabzone.com</p>
+            <p>Developed by: Mokshika 22f2001205</p>
+            <p>&copy; 2024 CollabZone. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

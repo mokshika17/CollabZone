@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Ad Request{% endblock %}
+
+{% block content %}
+    <h1>Edit Ad Request</h1>
+    <form method="POST" action="{{ url_for('edit_ad_request', ad_request_id=ad_request.id) }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.details.label }}<br>
+            {{ form.details(rows=5) }}<br>
+            {% for error in form.details.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.requirements.label }}<br>
+            {{ form.requirements(rows=5) }}<br>
+            {% for error in form.requirements.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.payment_amount.label }}<br>
+            {{ form.payment_amount(size=32) }}<br>
+            {% for error in form.payment_amount.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.status.label }}<br>
+            {{ form.status() }}<br>
+            {% for error in form.status.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.influencer_id.label }}<br>
+            {{ form.influencer_id() }}<br>
+            {% for error in form.influencer_id.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.campaign_id.label }}<br>
+            {{ form.campaign_id() }}<br>
+            {% for error in form.campaign_id.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

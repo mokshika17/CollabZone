@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+header nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+.main-content {
+    margin: 20px;
+}
+
+.profile-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile-photo img {
+    max-width: 150px;
+    border-radius: 50%;
+}
+
+.profile-photo input {
+    display: block;
+    margin-top: 10px;
+}
+
+.profile-details {
+    margin-top: 20px;
+}
+
+.profile-details label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.profile-details input,
+.profile-details select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}

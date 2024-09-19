@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a style="color:#f0a500" href="{{ url_for('index') }}" id="meaningful">CollabZone</a>
+        </div>
+        <div class="toptier">
+            <nav>
+                <a href="{{ url_for('influencer_dashboard') }}">Home</a>
+                <a href="{{ url_for('profile') }}">Profile</a>
+                <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+    <hr align="center" width="1230px" size="2" noshade="true">
+    <div class="container">
+        <h2>Edit Profile</h2>
+        <form method="POST" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.name.label }}<br>
+                {{ form.name(size=32) }}
+            </div>
+            <div>
+                <label for="dob">Date of Birth:</label>
+                {% if form.dob.data %}
+                    {{ form.dob.data.strftime('%Y-%m-%d') }}
+                {% else %}
+                    Not provided
+                {% endif %}
+            </div>            
+            <div>
+                {{ form.gender.label }}<br>
+                {{ form.gender() }}
+            </div>
+            <div>
+                {{ form.email.label }}<br>
+                {{ form.email(size=32) }}
+            </div>
+            <div>
+                {{ form.contact_no.label }}<br>
+                {{ form.contact_no(size=32) }}
+            </div> 
+            <div>
+                {{ form.niche.label }}<br>
+                {{ form.niche(size=32) }}
+            </div>
+            <div>
+                {{ form.profile_photo.label }}<br>
+                {{ form.profile_photo() }}
+            </div>
+            <div>
+                <h3>Social Media Handles</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for platform, link in form.social_handles.data.items() %}
+                        <tr>
+                            <td>
+                                <select name="platform[]">
+                                    <option value="Instagram" {% if platform == 'Instagram' %}selected{% endif %}>Instagram</option>
+                                    <option value="Facebook" {% if platform == 'Facebook' %}selected{% endif %}>Facebook</option>
+                                    <option value="YouTube" {% if platform == 'YouTube' %}selected{% endif %}>YouTube</option>
+                                    <option value="Snapchat" {% if platform == 'Snapchat' %}selected{% endif %}>Snapchat</option>
+                                    <option value="X" {% if platform == 'X' %}selected{% endif %}>X</option>
+                                </select>
+                            </td>
+                            <td><input type="url" name="social_link[]" value="{{ link }}" placeholder="Social Media Link"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" onclick="addSocialMediaField()">Add Social Media Handle</button>
+            </div>
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </div>
+    <footer>
+        <div class="container2">
+            <p>Contact info: info@collabzone.com</p>
+            <p>Developed by: Your Name</p>
+            <p>&copy; 2024 CollabZone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function addSocialMediaField() {
+            var table = document.querySelector('table tbody');
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <select name="platform[]">
+                        <option value="">Select Platform</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="Snapchat">Snapchat</option>
+                        <option value="X">X</option>
+                    </select>
+                </td>
+                <td><input type="url" name="social_link[]" placeholder="Social Media Link"></td>
+            `;
+            table.appendChild(row);
+        }
+    </script>
+</body>
+</html>

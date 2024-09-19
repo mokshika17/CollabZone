@@ -1,0 +1,421 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: radial-gradient(circle at 100%, #1b1b1b, #424242); 
+    background-repeat: repeat-y;
+    color: #fff; /* Changed to white to ensure text visibility on dark background */
+}
+
+#logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.logo {
+    text-shadow: #1b1b1b;
+    margin-top: 10px;
+    margin-left: 65px;
+    text-align: center;
+    top: 35px;
+    left: 150px;
+    color: #000000;
+    font-size: 1px;
+    padding: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #808080;
+    border-radius: 10px;
+}
+
+.toptier {
+    position: absolute;
+    top: 35px;
+    right: 64px;
+    width: 40%;
+    padding: 15px;
+    align-content: end;
+    background-color: white;
+    border-radius: 10px;
+    text-align: end;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+li, p {
+    font-size: 20px;
+    line-height: 115%;
+}
+
+header {
+    color: #fff;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+header .logo a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+header nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 15px 15px;
+    padding: 10px 15px; /* Add some padding */
+    background-color: #333; /* Background color for menu items */
+    border-radius: 5px; /* Rounded corners */
+}
+
+header nav a:hover {
+    text-decoration: none; /* No underline on hover */
+    background-color: #555; /* Darker background on hover */
+    color: #fff; /* Ensure text color remains white */
+}
+
+
+footer {
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+form div label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+form div input,
+form div textarea,
+form div select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form div button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form div button:hover {
+    background-color: #555;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+.section1 h2 {
+    margin-bottom: 10px;
+    color: #fff; /* Ensure section headers are visible */
+}
+.section2 h2 {
+    margin-bottom: 10px;
+    color: #333; /* Ensure section headers are visible */
+}
+
+.list-container {
+    list-style-type: none;
+    padding: 0;
+}
+
+.list-item {
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#no-campaigns {
+    color: #fff;
+    font-style: italic;
+    text-align: center;
+    margin-top: 20px;
+}
+
+button, .btn {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover, .btn:hover {
+    background-color: #555;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Add styles for the create campaign form */
+#createCampaignModal .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#createCampaignModal h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+#createCampaignModal form {
+    display: flex;
+    flex-direction: column;
+}
+
+#createCampaignModal form label {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#createCampaignModal form input,
+#createCampaignModal form textarea,
+#createCampaignModal form select {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#createCampaignModal form button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#createCampaignModal form button:hover {
+    background-color: #555;
+}
+
+/* Add styles for the view campaigns modal */
+/* ... existing styles ... */
+
+/* Updated styles for the view campaigns modal */
+#viewCampaignsModal .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 90%; /* Increased width */
+    max-width: 1000px; /* Set a larger max-width */
+}
+
+/* Styles for the campaigns table */
+#campaignsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    color: #000; /* Change table text color to black */
+}
+
+#campaignsTable th, #campaignsTable td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap; /* Ensure text doesn't wrap */
+}
+
+#campaignsTable th {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+#campaignsTable th:hover {
+    background-color: #555;
+}
+
+#campaignsTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#campaignsTable tbody tr:hover {
+    background-color: #ddd;
+}
+
+#campaignsTable td a, #campaignsTable td form button {
+    color: #333;
+    text-decoration: none;
+    margin-right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+#campaignsTable td a:hover, #campaignsTable td form button:hover {
+    text-decoration: underline;
+}
+
+#campaignsTable td form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+#campaignsTable td form button {
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+#campaignsTable td form button:hover {
+    text-decoration: underline;
+}
+
+/* Add styles for the create ad request form */
+#createAdRequestModal .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#createAdRequestModal h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+#createAdRequestModal form {
+    display: flex;
+    flex-direction: column;
+}
+
+#createAdRequestModal form label {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#createAdRequestModal form input,
+#createAdRequestModal form textarea,
+#createAdRequestModal form select {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%; /* Ensure inputs and textareas take full width */
+}
+
+#createAdRequestModal form button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#createAdRequestModal form button:hover {
+    background-color: #555;
+}
+

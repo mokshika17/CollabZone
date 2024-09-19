@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Ad Request</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/create_ad_request.css') }}">
+</head>
+<body>
+    <h2>Create Ad Request{% if campaign %} for Campaign: {{ campaign.name }}{% endif %}</h2>
+    
+    <!-- Back to Dashboard Button -->
+    <a href="{{ url_for('dashboard_sponsor') }}" class="btn-link">Back to Dashboard</a>
+    
+    <form action="{{ url_for('create_ad_request') }}" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <label for="ad_request_description">Ad Request Description:</label>
+        {{ form.ad_request_description(rows=3) }}<br>
+
+        <label for="campaign_id">Campaign:</label>
+        <select id="campaign_id" name="campaign_id" required>
+            {% for campaign in form.campaign_id.choices %}
+                <option value="{{ campaign[0] }}" {% if campaign[0] == form.campaign_id.data %}selected{% endif %}>
+                    {{ campaign[1] }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="influencer_id">Influencer:</label>
+        <select id="influencer_id" name="influencer_id" required>
+            {% for influencer in form.influencer_id.choices %}
+                <option value="{{ influencer[0] }}" {% if influencer[0] == form.influencer_id.data %}selected{% endif %}>
+                    {{ influencer[1] }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="requirements">Requirements:</label>
+        {{ form.requirements(rows=4) }}<br>
+
+        <label for="payment_amount">Payment Amount:</label>
+        {{ form.payment_amount() }}<br>
+
+        <button type="submit">Submit</button>
+        <button type="button" id="createAdRequestCancelBtn">Cancel</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!-- templates/negotiate_ad_request.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('influencer_dashboard') }}">CollabZone</a>
+        </div>
+        <nav>
+            <a href="{{ url_for('influencer_dashboard') }}">Dashboard</a>
+            <!-- Add other navigation links as needed -->
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="section">
+            <h2>Negotiate Payment for Campaign: {{ campaign.name }}</h2>
+            <p><strong>Requirements:</strong> {{ ad_request.requirements }}</p>
+            <p><strong>Current Payment Amount:</strong> ${{ ad_request.payment_amount }}</p>
+            
+            <form method="POST">
+                <div>
+                    <label for="payment_amount">Propose New Payment Amount:</label>
+                    <input type="text" id="payment_amount" name="payment_amount" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CollabZone. All rights reserved.</p>
+    </footer>
+</body>
+</html>

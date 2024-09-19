@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Campaign</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .btn-back {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+        .btn-submit {
+            width: 100%;
+        }
+        span {
+            font-size: 0.9em;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <a href="{{ url_for('dashboard_sponsor') }}" class="btn-back">Back to Dashboard</a>
+        <h2>Create Campaign</h2>
+        
+        <form method="POST" action="{{ url_for('create_campaign') }}" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name.label }}<br>
+                {{ form.name(class_='form-control') }}
+                {% for error in form.name.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.description.label }}<br>
+                {{ form.description(class_='form-control', rows=2, cols=40) }}
+                {% for error in form.description.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.start_date.label }}<br>
+                {{ form.start_date(class_='form-control') }}
+                {% for error in form.start_date.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.end_date.label }}<br>
+                {{ form.end_date(class_='form-control') }}
+                {% for error in form.end_date.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.budget.label }}<br>
+                {{ form.budget(class_='form-control') }}
+                {% for error in form.budget.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.niche.label }}<br>
+                {{ form.niche(class_='form-control') }}
+                {% for error in form.niche.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.contact_person.label }}<br>
+                {{ form.contact_person(class_='form-control') }}
+                {% for error in form.contact_person.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.image.label }}<br>
+                {{ form.image(class_='form-control-file') }}
+                {% for error in form.image.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.submit(class_='btn btn-primary btn-submit') }}
+            </div>
+        </form>
+    </div>
+</body>
+</html>

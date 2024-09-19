@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Sponsor Profile - CollabZone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a style="color:#f0a500" href="{{ url_for('index') }}" id="meaningful">CollabZone</a>
+        </div>
+        <div class="toptier">
+            <nav>
+                <a href="{{ url_for('dashboard_sponsor') }}">Home</a>
+                <a href="#" id="profileLink">Profile</a>
+                <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h2>Edit Your Profile</h2>
+        <form method="POST" action="{{ url_for('edit_sponsor_profile') }}" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.brand_name.label }}<br>
+                {{ form.brand_name(size=32) }}
+            </div>
+            <div>
+                {{ form.brand_niche.label }}<br>
+                {{ form.brand_niche(size=32) }}
+            </div>
+            <div>
+                {{ form.social_handles.label }}<br>
+                {{ form.social_handles(size=64) }}
+            </div>
+            <div>
+                {{ form.email.label }}<br>
+                {{ form.email(size=64) }}
+            </div>
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </main>
+
+    <!-- Profile Pop-up Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Your Profile</h2>
+            <!-- Optionally include the profile form in the modal as well, if needed -->
+            <!-- <form method="POST" action="{{ url_for('edit_sponsor_profile') }}" enctype="multipart/form-data"> -->
+            <!--     {{ form.hidden_tag() }} -->
+            <!--     <div> -->
+            <!--         {{ form.brand_name.label }}<br> -->
+            <!--         {{ form.brand_name(size=32) }} -->
+            <!--     </div> -->
+            <!--     <div> -->
+            <!--         {{ form.brand_niche.label }}<br> -->
+            <!--         {{ form.brand_niche(size=32) }} -->
+            <!--     </div> -->
+            <!--     <div> -->
+            <!--         {{ form.social_handles.label }}<br> -->
+            <!--         {{ form.social_handles(size=64) }} -->
+            <!--     </div> -->
+            <!--     <div> -->
+            <!--         {{ form.email.label }}<br> -->
+            <!--         {{ form.email(size=64) }} -->
+            <!--     </div> -->
+            <!--     <div> -->
+            <!--         {{ form.submit() }} -->
+            <!--     </div> -->
+            <!-- </form> -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for handling the modal display
+        var profileModal = document.getElementById("profileModal");
+        var profileLink = document.getElementById("profileLink");
+        var profileSpan = document.getElementsByClassName("close")[0];
+
+        profileLink.onclick = function() {
+            profileModal.style.display = "block";
+        }
+
+        profileSpan.onclick = function() {
+            profileModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == profileModal) {
+                profileModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

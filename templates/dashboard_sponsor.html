@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Dashboard - CollabZone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Style for buttons that are actually links */
+        .btn-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #f0a500;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-link:hover {
+            background-color: #d48f00;
+        }
+
+        .btn-link:active {
+            background-color: #bf7e00;
+        }
+
+        /* Modal Background */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe; /* White background */
+            color: #333; /* Darker text color */
+            margin: 15% auto; /* Centering modal */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Modal width */
+        }
+        
+        /* Table Text Color */
+        #adRequestsTable {
+            color: #333; /* Darker text color for table */
+        }
+
+        /* Table Border */
+        #adRequestsTable {
+            border-collapse: collapse; /* Ensure borders are collapsed */
+            width: 100%; /* Full width */
+        }
+
+        #adRequestsTable th, #adRequestsTable td {
+            border: 1px solid #333; /* Darker border color */
+            padding: 8px; /* Cell padding */
+        }
+
+        #adRequestsTable th {
+            background-color: #f2f2f2; /* Light background for table headers */
+            color: #333; /* Darker text color for headers */
+        }
+
+        /* Active Campaign Text */
+        .no-campaign{
+            color: #000; /* Darker text color */
+            font-weight: bold; /* Optional: make the text bold */
+        }
+
+        .active-campaign {
+            color: #000; /* Darker text color */
+            font-weight: bold; /* Optional: make the text bold */
+        }
+        
+        /* Close Button Text Color */
+        .close {
+            color: #333; /* Darker color for close button */
+        }
+        
+        /* Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a style="color:#f0a500" href="{{ url_for('dashboard_sponsor') }}" id="meaningful">CollabZone</a>
+        </div>
+        <div class="toptier">
+            <nav>
+                <a href="{{ url_for('dashboard_sponsor') }}">Home</a>
+                <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                    {{ form.hidden_tag() }}  <!-- CSRF token -->
+                    <button type="submit">Logout</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="section campaign-management">
+            <h2>Campaign Management</h2>
+            <a href="{{ url_for('create_campaign') }}" class="btn-link">Create Campaign</a>
+            <button id="viewCampaignsBtn" class="btn-link">View Active Campaigns</button>
+        </section>
+
+        <section class="section ad-request-management">
+            <h2>Ad Request Management</h2>
+            <a href="{{ url_for('create_ad_request') }}" class="btn-link">Create Ad Request</a>
+            <button id="viewAdRequestsBtn" class="btn-link">View Ad Requests</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CollabZone. All rights reserved.</p>
+        <p>Developed by: Mokshika 22f2001205</p>
+        <p>Contact info: info@collabzone.com</p>
+    </footer>
+
+    <!-- View Campaigns Modal -->
+    <div id="viewCampaignsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="viewCampaignsClose">&times;</span>
+            <h2>Active Campaigns</h2>
+            {% if campaigns|length == 0 %}
+                <p id="no-campaigns">No active campaigns available.</p>
+            {% else %}
+                <table id="campaignsTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">Sr. No.</th>
+                            <th onclick="sortTable(1)">Campaign Name</th>
+                            <th onclick="sortTable(2)">Niche</th>
+                            <th onclick="sortTable(3)">Budget</th>
+                            <th onclick="sortTable(4)">Start Date</th>
+                            <th onclick="sortTable(5)">End Date</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for campaign in campaigns %}
+                            <tr>
+                                <td class="active-campaign">{{ loop.index }}</td>
+                                <td class="active-campaign">{{ campaign.name }}</td>
+                                <td class="active-campaign">{{ campaign.niche }}</td>
+                                <td class="active-campaign">{{ campaign.budget }}</td>
+                                <td class="active-campaign">{{ campaign.start_date }}</td>
+                                <td class="active-campaign">{{ campaign.end_date }}</td>
+                                <td>
+                                    <a href="{{ url_for('edit_campaign', campaign_id=campaign.id) }}">Edit</a>
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('delete_campaign', campaign_id=campaign.id) }}" method="POST" style="display:inline;">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            <button type="button" id="viewCampaignsCancelBtn" style="margin-top: 20px;">Close</button>
+        </div>
+    </div>
+
+    <!-- View Ad Requests Modal -->
+    <div id="viewAdRequestsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="viewAdRequestsClose">&times;</span>
+            <h2>Ad Requests</h2>
+            {% if ad_requests|length == 0 %}
+                <p id="no-ad-requests">No ad requests available.</p>
+            {% else %}
+                <table id="adRequestsTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">Sr. No.</th>
+                            <th onclick="sortTable(1)">Ad Request Name</th>
+                            <th onclick="sortTable(2)">Campaign</th>
+                            <th onclick="sortTable(3)">Influencer</th>
+                            <th onclick="sortTable(4)">Payment Amount</th>
+                            <th onclick="sortTable(5)">Status</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ad_request in ad_requests %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ ad_request.name }}</td>
+                                <td>{{ ad_request.campaign.name }}</td>
+                                <td>{{ ad_request.influencer.name }}</td>
+                                <td>{{ ad_request.payment_amount }}</td>
+                                <td>{{ ad_request.status }}</td>
+                                <td>
+                                    <a href="{{ url_for('edit_ad_request', ad_request_id=ad_request.id) }}">Edit</a>
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('delete_ad_request', ad_request_id=ad_request.id) }}" method="POST" style="display:inline;">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            <button type="button" id="viewAdRequestsCancelBtn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to open and close modals
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // View Campaigns Modal
+        document.getElementById("viewCampaignsBtn").onclick = function() {
+            openModal("viewCampaignsModal");
+        };
+        document.getElementById("viewCampaignsClose").onclick = function() {
+            closeModal("viewCampaignsModal");
+        };
+        document.getElementById("viewCampaignsCancelBtn").onclick = function() {
+            closeModal("viewCampaignsModal");
+        };
+
+        // View Ad Requests Modal
+        document.getElementById("viewAdRequestsBtn").onclick = function() {
+            openModal("viewAdRequestsModal");
+        };
+        document.getElementById("viewAdRequestsClose").onclick = function() {
+            closeModal("viewAdRequestsModal");
+        };
+        document.getElementById("viewAdRequestsCancelBtn").onclick = function() {
+            closeModal("viewAdRequestsModal");
+        };
+
+        // Function to sort the table
+        function sortTable(columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("adRequestsTable");
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
